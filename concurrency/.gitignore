@@ -1,1 +1,6 @@
-/target/
+target/
+.settings
+.project
+.classpath
+.metadata
+.recommenders
