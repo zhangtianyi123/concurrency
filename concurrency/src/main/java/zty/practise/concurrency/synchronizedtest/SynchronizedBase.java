@@ -11,10 +11,15 @@ package zty.practise.concurrency.synchronizedtest;
 public class SynchronizedBase {
 
 	/**
-	 * synchroized有以下三种使用方式
+	 * 在32位机器上，long/double的读写都是非原子的
+	 * int等其他类型的读写是原子的  但是i++不是
 	 */
 	private static long count = 0L;
 
+	/**
+	 * synchroized有以下三种使用方式
+	 */
+	
 	/**
 	 * 1 synchronized修饰实例方法，锁对象为this指针
 	 */
