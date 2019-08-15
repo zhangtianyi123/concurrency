@@ -6,9 +6,11 @@ import java.util.concurrent.locks.ReentrantLock;
 import zty.practise.concurrency.synchronizedtest.SynchronizedBase;
 
 /**
- * lock是Java SDK提供的可替代synchronized的管程实现
+ * lock是Java SDK提供的可替代synchronized的管程实现（基本语义是互斥）
  * 
  * lock的可见性是由volatile关键字间接实现的
+ * 
+ * 对比于Synchronized能够相应终端，支持超市，且可以非阻塞的获取锁
  * 
  * @author zhangtianyi
  *
@@ -58,6 +60,7 @@ public class LockBase {
 			for (int j = 0; j < 10000; j++) {
 				LockBase.set();
 			}
+		
 		});
 		Thread b = new Thread(() -> {
 			for (int j = 0; j < 10000; j++) {
@@ -71,6 +74,19 @@ public class LockBase {
 		b.join();
 
 		return count == 20000;
+	}
+	
+	/**
+	 * 可以通过构造函数的参数指定lock为公平锁或非公平锁
+	 * @param args
+	 * @throws InterruptedException
+	 */
+	public void getFairOrNonFairLock() {
+		//非公平锁
+		Lock fairLock = new ReentrantLock();
+		
+		//公平锁
+		Lock nonFairLock = new ReentrantLock(true);
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
