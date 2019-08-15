@@ -29,11 +29,11 @@ public class SynchronizedBase {
 		count++;
 	}
 
+	private final Object lock = new Object();
+    
 	/**
 	 * 3 synchronized修饰代码块，锁对象为传入的对象
 	 */
-	private final Object lock = new Object();
-
 	public void doWithock() {
 		synchronized (lock) {
 			count--;
@@ -43,6 +43,7 @@ public class SynchronizedBase {
 	/**
 	 * 测试synchronized的互斥性，因为i++不是原子操作存在竞态条件（cpu缓存+cpu切换）
 	 * 所以如果不互斥极大可能结果小于2w
+	 * @author zhangtianyi
 	 * @return
 	 * @throws InterruptedException
 	 */
