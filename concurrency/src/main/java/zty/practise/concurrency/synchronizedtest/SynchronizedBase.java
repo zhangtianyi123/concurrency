@@ -34,6 +34,11 @@ public class SynchronizedBase {
 		count++;
 	}
 
+	/**
+	 * lock使用私有的 不可变的为最佳实践
+	 * 由于String/Integer等享元模式（缓存常量池）的存在
+	 * 可能不同实例的锁  引用的是同一个对象，所以不适合作为锁
+	 */
 	private final Object lock = new Object();
     
 	/**
