@@ -24,6 +24,7 @@ public class StampedLockAPI {
 	private int count = 0;
 	
 	final StampedLock slock = new StampedLock();
+
 	
 	//读
 	public int getCount() {
