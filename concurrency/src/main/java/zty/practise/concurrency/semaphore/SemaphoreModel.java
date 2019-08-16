@@ -12,6 +12,9 @@ import zty.practise.concurrency.synchronizedtest.SynchronizedBase;
  * 
  * 信号量的核心是共享变量计数器，通过它来协调同步线程
  * 
+ * TODO
+ * 注：暂时只是个大概实现，使用是有点问题的
+ * 
  * @author zhangtianyi
  *
  */
