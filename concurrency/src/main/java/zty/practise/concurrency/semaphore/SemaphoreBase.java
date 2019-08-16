@@ -1,5 +1,7 @@
 package zty.practise.concurrency.semaphore;
 
+import java.util.concurrent.Semaphore;
+
 /**
  * 
  * 管程和信号量是两大解决并发问题的模型
@@ -13,5 +15,56 @@ package zty.practise.concurrency.semaphore;
  */
 public class SemaphoreBase {
 
+
+	static int num = 0;
+
+	// 初始化为1 等价于互斥锁
+	static final Semaphore mySem = new Semaphore(1);
+
+	static void addNum() throws InterruptedException {
+		mySem.acquire();
+		try {
+			num++;
+		} finally {
+			mySem.release();
+		}
+	}
+	
+	private static boolean testExclusive() throws InterruptedException {
+
+		Thread a = new Thread(() -> {
+			for (int j = 0; j < 100; j++) {
+				try {
+					SemaphoreBase.addNum();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		Thread b = new Thread(() -> {
+			for (int j = 0; j < 100; j++) {
+				try {
+					SemaphoreBase.addNum();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		a.start();
+		b.start();
+
+		a.join();
+		b.join();
+
+		System.out.println(num);
+		return num == 200;
+	}
+
+	public static void main(String[] args) throws InterruptedException {
+		// 测试用信号量实现互斥
+		testExclusive();
+	}
 	
 }
