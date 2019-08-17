@@ -24,6 +24,7 @@ public class ContainersBase {
 
 	/**
 	 * 进入看源码可知 所有的实例方法都被synchronized（同一个锁）包起来执行了
+	 * 内部持有容器实例，对所有调用包装synchronized 类似于代理模式
 	 */
 	void wrapWithSynchronized() {
 		List list = Collections.synchronizedList(new ArrayList());
