@@ -1,5 +1,7 @@
 package zty.practise.concurrency.containers;
 
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -18,10 +20,26 @@ public class ConcurrentHashMapTest {
 	
 	final ConcurrentHashMap cmap = new ConcurrentHashMap();
 	
-	void test() {
-		cmap.get(null);
+	/**
+	 * 尤其是在1.8之前 并发操作容易引起hashmap链表成环 引起cpu飙升
+	 */
+	void testLinkedForm() {
+		final HashMap<String, String> map = new HashMap<String, String>();
+		for (int i = 0; i < 10000000; i++) {
+		    new Thread(new Runnable() {
+		        @Override
+		        public void run() {
+		            map.put(UUID.randomUUID().toString(), "");
+		        }
+		    }).start();
+		}
 	}
 
+	public static void main(String[] args) {
+		ConcurrentHashMapTest test = new ConcurrentHashMapTest();
+		test.testLinkedForm();
+	}
+	
 	/**
 	 * TODO
 	 * @author zhangtianyi
