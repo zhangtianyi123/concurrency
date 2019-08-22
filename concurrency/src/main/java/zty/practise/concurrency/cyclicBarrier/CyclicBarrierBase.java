@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 /**
  * CyclicBarrier可以实现线程的同步等待
  * 
- * 可以充值计数器
+ * 可以重置计数器
  * 可以传入回调函数（同步执行->异步执行）
  * 
  * CountDownLatch主要用来解决一个线程等待多个线程的场景

@@ -64,11 +64,13 @@ public class SynchronizedBase {
 				SynchronizedBase.set();
 			}
 		});
+		
 		Thread b = new Thread(() -> {
 			for (int j = 0; j < 10000; j++) {
 				SynchronizedBase.set();
 			}
 		});
+		
 		a.start();
 		b.start();
 		
