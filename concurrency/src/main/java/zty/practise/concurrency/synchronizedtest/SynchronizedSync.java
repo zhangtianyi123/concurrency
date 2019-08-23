@@ -25,15 +25,15 @@ public class SynchronizedSync {
 	 */
 	void produce() throws InterruptedException {
 		synchronized(lock) {
-			System.out.println("生产者进入临界区");
+			System.out.println(Thread.currentThread() + "生产者进入临界区");
 			while(queue.size() == 5) {
 				//阻塞等待唤醒并释放锁
 				lock.wait();
 			}
 			queue.add("goods");
 			System.out.println("queue-add");
-			//随机唤醒一个
-			lock.notify();
+			//All唤醒后因为要竞争锁，所以体现的效果也是随机唤醒一个，其它继续wait
+			lock.notifyAll();
 		}
 		
 	}
@@ -45,14 +45,16 @@ public class SynchronizedSync {
 	 */
 	void consume() throws InterruptedException {
 		synchronized(lock) {
-			System.out.println("消费者进入临界区");
+			System.out.println(Thread.currentThread() + "消费者进入临界区");
 			while(queue.size() == 0) {
+				System.out.println(Thread.currentThread() + "消费者wait");
 				lock.wait();
-				System.out.println("消费者被唤醒");
+				System.out.println(Thread.currentThread() + "消费者被唤醒");
 			}
+			Thread.sleep(5000);
 			queue.remove(queue.size()-1);
 			System.out.println("queue-remove");
-			lock.notify();
+			lock.notifyAll();
 		}
 	}
 	

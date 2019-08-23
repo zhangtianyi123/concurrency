@@ -7,6 +7,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.google.common.collect.Lists;
 
+import zty.practise.concurrency.guardedsuspension.GuardedSync;
+
 /**
  * synchronized利用object的wait  notify  notifyAll能实现同步 但是只有一个条件变量
  * 
@@ -35,8 +37,9 @@ public class LockSync {
 			}
 			queue.add("goods");
 			System.out.println("queue-add");
-			notEmpty.signal();
+			notEmpty.signalAll();
 		} finally {
+			System.out.println("生产者释放锁");
 			lock.unlock();
 		}
 		
@@ -50,11 +53,47 @@ public class LockSync {
 				notEmpty.await();
 				System.out.println("消费者被唤醒");
 			}
+			System.out.println("--------消费者已经唤醒等待一会儿再消费----------");
+			Thread.sleep(50000);
 			queue.remove(queue.size()-1);
 			System.out.println("queue-remove");
-			notFull.signal();
+			notFull.signalAll();
 		} finally {
 			lock.unlock();
 		}
+	}
+	
+	public static void main(String[] args) throws InterruptedException {
+		LockSync sync = new LockSync();
+		Thread A = new Thread(() -> { try {
+			sync.consume();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}});
+		
+		Thread B = new Thread(() -> { try {
+			sync.consume();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}});
+		
+		Thread C = new Thread(() -> { try {
+			sync.consume();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}});
+		
+		Thread D = new Thread(() -> { try {
+			sync.produce();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}});
+		A.start();
+		B.start();
+		C.start();
+		Thread.sleep(5000);
+		D.start();
+		Thread.sleep(10000);
+		System.out.println("end...");
 	}
 }
