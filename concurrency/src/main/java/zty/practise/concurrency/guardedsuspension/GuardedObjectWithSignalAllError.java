@@ -7,6 +7,14 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+/**
+ * 暂时来说GuardedObject 还不适合阻塞队列这样双边互相生辰消费的场景
+ * 只适合于if(A) B  的单边场景
+ * 
+ * @author zhangtianyi
+ *
+ * @param <T>
+ */
 public class GuardedObjectWithSignalAllError<T> {
 
 	// 受保护的对象
